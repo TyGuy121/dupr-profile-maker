@@ -41,11 +41,11 @@ export default function DuprProfile() {
         ref={captureRef}
         className="flex-1 flex flex-col"
         style={{
-          background: "linear-gradient(180deg, #4A7BF7 0%, #2B4FCF 100%)",
+          background: "linear-gradient(225deg, rgba(75,151,254,1) 0%, rgba(1,99,208,1) 40%, rgba(5,21,94,1) 87%)",
         }}
       >
         {/* Top Banner */}
-        <div className="relative overflow-hidden bg-[#1a3a8a] px-4 py-3 flex items-center justify-between">
+        <div className="relative overflow-hidden bg-[#000D34] px-4 py-3 flex items-center justify-between">
           <p className="text-white font-semibold text-sm leading-tight max-w-[65%]">
             DUPR Reset Tracking & Updates Coming Soon
           </p>
@@ -71,44 +71,23 @@ export default function DuprProfile() {
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-5 pb-3">
           <h1 className="text-white text-2xl font-bold">My DUPR</h1>
-          <div className="flex items-center gap-4">
-            <button className="text-white">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="16" />
-                <line x1="8" y1="12" x2="16" y2="12" />
+          <div className="flex items-center gap-3">
+            {/* Plus */}
+            <button className="bg-white/25 rounded-full w-11 h-11 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <path d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z" />
               </svg>
             </button>
-            <button className="text-white">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            {/* Chat */}
+            <button className="bg-white/25 rounded-full w-11 h-11 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" />
               </svg>
             </button>
-            <button className="text-white">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            {/* Gear */}
+            <button className="bg-white/25 rounded-full w-11 h-11 flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                <path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.02 7.02 0 0 0-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.47.47 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.37 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.03-1.58zM12 15.6A3.6 3.6 0 0 1 8.4 12 3.6 3.6 0 0 1 12 8.4a3.6 3.6 0 0 1 3.6 3.6 3.6 3.6 0 0 1-3.6 3.6z" />
               </svg>
             </button>
           </div>
@@ -172,10 +151,10 @@ export default function DuprProfile() {
 
         {/* Action Buttons */}
         <div className="flex gap-3 px-5 py-2">
-          <button className="flex-1 border border-white/20 rounded-full py-2.5 text-white text-sm font-medium">
+          <button className="flex-1 bg-white/[0.15] rounded-full py-2.5 text-white text-sm font-medium">
             Share Profile
           </button>
-          <button className="flex-1 border border-white/20 rounded-full py-2.5 text-white text-sm font-medium flex items-center justify-center gap-2">
+          <button className="flex-1 bg-white/[0.15] rounded-full py-2.5 text-white text-sm font-medium flex items-center justify-center gap-2">
             <span>
               ID:{" "}
               <EditableField
@@ -201,31 +180,33 @@ export default function DuprProfile() {
 
         {/* Purchase Button */}
         <div className="px-5 py-2">
-          <button className="w-full border border-white/20 rounded-full py-2.5 text-white text-sm font-medium flex items-center justify-center gap-2">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <circle cx="8" cy="10" r="1.5" fill="currentColor" />
-              <circle cx="16" cy="10" r="1.5" fill="currentColor" />
-              <circle cx="12" cy="15" r="1.5" fill="currentColor" />
-              <circle cx="9" cy="13" r="1" fill="currentColor" />
-              <circle cx="15" cy="13" r="1" fill="currentColor" />
+          <button className="w-full bg-white/[0.15] rounded-full py-2.5 text-white text-sm font-medium flex items-center justify-center gap-2">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              {/* White filled ball */}
+              <circle cx="12" cy="12" r="10" fill="white" />
+              {/* Pickleball holes — staggered grid, holes show as blue cutouts */}
+              <circle cx="8.5" cy="7.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="12" cy="7.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="15.5" cy="7.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="6.8" cy="10.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="10.3" cy="10.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="13.7" cy="10.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="17.2" cy="10.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="8.5" cy="13.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="12" cy="13.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="15.5" cy="13.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="9.5" cy="16.5" r="1.15" fill="rgba(30,90,210,0.55)" />
+              <circle cx="13" cy="16.5" r="1.15" fill="rgba(30,90,210,0.55)" />
             </svg>
             Purchase Vulcan Balls
           </button>
         </div>
 
         {/* Ratings Section */}
-        <div className="flex gap-4 px-5 py-4">
+        <div className="flex gap-3 px-4 py-3">
           {/* Doubles */}
-          <div className="bg-white/[0.08] rounded-2xl p-4 flex-shrink-0">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="flex-1 bg-white/[0.12] rounded-2xl px-4 py-3">
+            <div className="flex items-center gap-2 mb-1">
               <svg
                 width="16"
                 height="16"
@@ -240,13 +221,13 @@ export default function DuprProfile() {
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
               <span className="text-white text-xs font-medium">Doubles</span>
-              <div className="relative ml-1">
+              <div className="relative ml-auto">
                 <ProgressRing
                   value={profile.doublesReliability}
-                  size={40}
-                  strokeWidth={3}
+                  size={38}
+                  strokeWidth={5}
                 />
-                <span className="absolute inset-0 flex items-center justify-center text-white text-[10px] font-bold rotate-90">
+                <span className="absolute inset-0 flex items-center justify-center text-white text-[10px] font-bold">
                   <EditableField
                     value={String(profile.doublesReliability)}
                     onChange={(v) =>
@@ -273,29 +254,29 @@ export default function DuprProfile() {
           </div>
 
           {/* Singles */}
-          <div className="flex-1 p-4">
-            <div className="flex items-center gap-2 mb-2">
+          <div className="flex-1 bg-white/[0.06] rounded-2xl px-4 py-3">
+            <div className="flex items-center gap-2 mb-1">
               <svg
                 width="16"
                 height="16"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="white/60"
+                stroke="rgba(255,255,255,0.6)"
                 strokeWidth="2"
               >
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
               <span className="text-white/60 text-xs font-medium">Singles</span>
-              <div className="relative ml-1">
+              <div className="relative ml-auto">
                 <ProgressRing
                   value={profile.singlesReliability}
-                  size={40}
-                  strokeWidth={3}
+                  size={38}
+                  strokeWidth={5}
                   color="rgba(255,255,255,0.3)"
                 />
                 {profile.singlesReliability > 0 && (
-                  <span className="absolute inset-0 flex items-center justify-center text-white text-[10px] font-bold rotate-90">
+                  <span className="absolute inset-0 flex items-center justify-center text-white text-[10px] font-bold">
                     <EditableField
                       value={String(profile.singlesReliability)}
                       onChange={(v) =>
@@ -325,7 +306,7 @@ export default function DuprProfile() {
 
         {/* Tab Bar */}
         <div className="flex items-center gap-6 px-5 py-3">
-          <button className="border border-white/30 rounded-full px-5 py-1.5 text-white text-sm font-medium">
+          <button className="bg-white rounded-full px-5 py-1.5 text-[#05155E] text-sm font-semibold">
             Performance
           </button>
           <button className="text-white/60 text-sm font-medium">
@@ -337,7 +318,7 @@ export default function DuprProfile() {
         <div className="flex-1 min-h-[120px]" />
 
         {/* Bottom Navigation */}
-        <div className="flex items-center justify-around py-2 pb-4 border-t border-white/10 bg-[#2B4FCF]">
+        <div className="flex items-center justify-around py-2 pb-4 border-t border-white/10 bg-[#05155E]">
           <NavItem
             icon={
               <svg
@@ -348,9 +329,10 @@ export default function DuprProfile() {
                 stroke="currentColor"
                 strokeWidth="1.5"
               >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M2 12h20" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                <line x1="18" y1="20" x2="18" y2="10" />
+                <line x1="12" y1="20" x2="12" y2="4" />
+                <line x1="6" y1="20" x2="6" y2="14" />
+                <line x1="2" y1="20" x2="22" y2="20" />
               </svg>
             }
             label="Forecast"
@@ -418,29 +400,38 @@ export default function DuprProfile() {
                 stroke="currentColor"
                 strokeWidth="1.5"
               >
-                <path d="M6 9l6-6 6 6" />
-                <path d="M12 3v14" />
-                <circle cx="12" cy="21" r="2" />
-                <path d="M5 21h14" />
+                <path d="M8 21h8" />
+                <path d="M12 17v4" />
+                <path d="M7 4h10v8a5 5 0 0 1-10 0V4z" />
+                <path d="M7 8H4a2 2 0 0 0 0 4h3" />
+                <path d="M17 8h3a2 2 0 0 1 0 4h-3" />
               </svg>
             }
             label="Events"
           />
           <NavItem
             icon={
-              <div className="w-6 h-6 rounded-full bg-white/30 flex items-center justify-center">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </div>
+              profile.profilePhoto ? (
+                <img
+                  src={profile.profilePhoto}
+                  alt="avatar"
+                  className="w-6 h-6 rounded-full object-cover border border-white/60"
+                />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-white/30 flex items-center justify-center">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+              )
             }
             label="My DUPR"
             active
@@ -449,7 +440,7 @@ export default function DuprProfile() {
       </div>
 
       {/* Controls - outside capture area */}
-      <div className="bg-[#1a2a6c] px-5 py-4 flex gap-3">
+      <div className="bg-[#000D34] px-5 py-4 flex gap-3">
         <button
           onClick={() => setIsEditing(!isEditing)}
           className={`flex-1 rounded-full py-3 text-sm font-semibold ${

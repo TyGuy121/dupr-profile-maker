@@ -23,7 +23,7 @@ export default function ProgressRing({
   const offset = circumference * (1 - progress);
 
   return (
-    <svg width={size} height={size} className="transform -rotate-90">
+    <svg width={size} height={size}>
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -43,6 +43,7 @@ export default function ProgressRing({
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
       )}
     </svg>

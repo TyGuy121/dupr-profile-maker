@@ -11,5 +11,5 @@ export const defaultProfile: ProfileData = {
   singlesReliability: 0,
   following: 3,
   followers: 2,
-  playerId: "8JWK5W",
+  playerId: "R7NX3P",
 };
