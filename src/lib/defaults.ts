@@ -5,7 +5,7 @@ export const defaultProfile: ProfileData = {
   location: "Anywhere, CA, US",
   gender: "Female",
   profilePhoto: "",
-  doublesRating: "3.157",
+  doublesRating: "6.000",
   doublesReliability: 73,
   singlesRating: "NR",
   singlesReliability: 0,
