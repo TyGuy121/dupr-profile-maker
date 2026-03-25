@@ -1,9 +1,9 @@
 import { ProfileData } from "./types";
 
 export const defaultProfile: ProfileData = {
-  name: "Ty Root",
-  location: "Travis County, TX, US",
-  gender: "Male",
+  name: "Jane Doe",
+  location: "Anywhere, CA, US",
+  gender: "Female",
   profilePhoto: "",
   doublesRating: "3.157",
   doublesReliability: 73,
