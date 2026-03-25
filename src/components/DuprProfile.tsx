@@ -12,6 +12,7 @@ export default function DuprProfile() {
   const [profile, setProfile] = useState<ProfileData>(defaultProfile);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [activeCard, setActiveCard] = useState<"doubles" | "singles">("doubles");
   const captureRef = useRef<HTMLDivElement>(null);
 
   const update = <K extends keyof ProfileData>(
@@ -205,14 +206,17 @@ export default function DuprProfile() {
         {/* Ratings Section */}
         <div className="flex gap-3 px-4 py-3">
           {/* Doubles */}
-          <div className="flex-1 bg-white/[0.12] rounded-2xl px-4 py-3">
+          <div
+            className={`flex-1 rounded-2xl px-4 py-3 cursor-pointer transition-all ${activeCard === "doubles" ? "bg-white/[0.12]" : "bg-white/[0.06]"}`}
+            onClick={() => setActiveCard("doubles")}
+          >
             <div className="flex items-center gap-2 mb-1">
               <svg
                 width="16"
                 height="16"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="white"
+                stroke={activeCard === "doubles" ? "white" : "rgba(255,255,255,0.6)"}
                 strokeWidth="2"
               >
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -220,12 +224,13 @@ export default function DuprProfile() {
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
-              <span className="text-white text-xs font-medium">Doubles</span>
+              <span className={`text-xs font-medium ${activeCard === "doubles" ? "text-white" : "text-white/60"}`}>Doubles</span>
               <div className="relative ml-auto">
                 <ProgressRing
                   value={profile.doublesReliability}
                   size={38}
                   strokeWidth={5}
+                  color={activeCard === "doubles" ? undefined : "rgba(255,255,255,0.3)"}
                 />
                 <span className="absolute inset-0 flex items-center justify-center text-white text-[10px] font-bold">
                   <EditableField
@@ -236,7 +241,7 @@ export default function DuprProfile() {
                         Math.min(100, Math.max(0, parseInt(v) || 0))
                       )
                     }
-                    isEditing={isEditing}
+                    isEditing={isEditing && activeCard === "doubles"}
                     className="text-white text-[10px] font-bold"
                     inputMode="numeric"
                     inputClassName="!w-8 text-center text-[10px]"
@@ -247,35 +252,38 @@ export default function DuprProfile() {
             <EditableField
               value={profile.doublesRating}
               onChange={(v) => update("doublesRating", v)}
-              isEditing={isEditing}
-              className="text-white text-4xl font-bold"
+              isEditing={isEditing && activeCard === "doubles"}
+              className={`text-4xl font-bold ${activeCard === "doubles" ? "text-white" : "text-white/60"}`}
               inputMode="decimal"
             />
           </div>
 
           {/* Singles */}
-          <div className="flex-1 bg-white/[0.06] rounded-2xl px-4 py-3">
+          <div
+            className={`flex-1 rounded-2xl px-4 py-3 cursor-pointer transition-all ${activeCard === "singles" ? "bg-white/[0.12]" : "bg-white/[0.06]"}`}
+            onClick={() => setActiveCard("singles")}
+          >
             <div className="flex items-center gap-2 mb-1">
               <svg
                 width="16"
                 height="16"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="rgba(255,255,255,0.6)"
+                stroke={activeCard === "singles" ? "white" : "rgba(255,255,255,0.6)"}
                 strokeWidth="2"
               >
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
-              <span className="text-white/60 text-xs font-medium">Singles</span>
+              <span className={`text-xs font-medium ${activeCard === "singles" ? "text-white" : "text-white/60"}`}>Singles</span>
               <div className="relative ml-auto">
                 <ProgressRing
                   value={profile.singlesReliability}
                   size={38}
                   strokeWidth={5}
-                  color="rgba(255,255,255,0.3)"
+                  color={activeCard === "singles" ? undefined : "rgba(255,255,255,0.3)"}
                 />
-                {profile.singlesReliability > 0 && (
+                {(profile.singlesReliability > 0 || activeCard === "singles") && (
                   <span className="absolute inset-0 flex items-center justify-center text-white text-[10px] font-bold">
                     <EditableField
                       value={String(profile.singlesReliability)}
@@ -285,7 +293,7 @@ export default function DuprProfile() {
                           Math.min(100, Math.max(0, parseInt(v) || 0))
                         )
                       }
-                      isEditing={isEditing}
+                      isEditing={isEditing && activeCard === "singles"}
                       className="text-white text-[10px] font-bold"
                       inputMode="numeric"
                       inputClassName="!w-8 text-center text-[10px]"
@@ -297,8 +305,8 @@ export default function DuprProfile() {
             <EditableField
               value={profile.singlesRating}
               onChange={(v) => update("singlesRating", v)}
-              isEditing={isEditing}
-              className="text-white/60 text-4xl font-bold"
+              isEditing={isEditing && activeCard === "singles"}
+              className={`text-4xl font-bold ${activeCard === "singles" ? "text-white" : "text-white/60"}`}
               inputMode="decimal"
             />
           </div>
