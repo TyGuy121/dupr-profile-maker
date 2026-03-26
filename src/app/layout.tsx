@@ -9,8 +9,31 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DUPR Profile Maker",
+  metadataBase: new URL("https://duprgenerator.com"),
+  title: "DUPR Generator",
   description: "Create and customize your DUPR profile screenshot",
+  openGraph: {
+    title: "DUPR Generator. Make It Your Own.",
+    description: "Create and customize your DUPR profile screenshot",
+    url: "https://duprgenerator.com",
+    siteName: "DUPR Generator",
+    images: [
+      {
+        url: "/og-preview.png",
+        width: 1200,
+        height: 630,
+        alt: "DUPR Generator social preview graphic",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DUPR Generator. Make It Your Own.",
+    description: "Create and customize your DUPR profile screenshot",
+    images: ["/og-preview.png"],
+  },
 };
 
 export const viewport: Viewport = {
