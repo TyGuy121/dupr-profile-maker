@@ -58,7 +58,7 @@ export default function ProgressRing({
         )}
       </svg>
       {children ? (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center">
           {children}
         </div>
       ) : null}

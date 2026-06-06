@@ -72,6 +72,20 @@ describe("DuprProfile editing flow", () => {
     expect(followerPill).not.toBeNull();
     expect(followerPill).toHaveTextContent(/^7/);
   });
+
+  it("activates reliability editing from the rating hero overlay", async () => {
+    const user = userEvent.setup();
+    render(<DuprProfile />);
+
+    await user.click(screen.getByRole("button", { name: /edit profile/i }));
+    const reliabilityTrigger = screen.getByText("90");
+
+    expect(reliabilityTrigger.closest(".pointer-events-none")).toBeNull();
+
+    await user.click(reliabilityTrigger);
+
+    expect(screen.getByLabelText("Rating reliability")).toBeInTheDocument();
+  });
 });
 
 describe("editing primitives", () => {
