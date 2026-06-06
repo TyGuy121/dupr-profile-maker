@@ -11,7 +11,7 @@ afterEach(() => {
 });
 
 describe("DuprProfile editing flow", () => {
-  it("only exposes editable value fields when edit mode is enabled", async () => {
+  it("reveals the name input only after edit mode is enabled and the value is activated", async () => {
     const user = userEvent.setup();
     render(<DuprProfile />);
 
@@ -25,7 +25,7 @@ describe("DuprProfile editing flow", () => {
 });
 
 describe("editing primitives", () => {
-  it("adds an accessible label and stable minimum width for editable numeric fields", async () => {
+  it("adds an accessible label, stable minimum width, and keyboard activation for editable numeric fields", async () => {
     const user = userEvent.setup();
     render(
       <EditableField
@@ -38,7 +38,12 @@ describe("editing primitives", () => {
       />
     );
 
-    await user.click(screen.getByText("90"));
+    await user.tab();
+
+    const trigger = screen.getByText("90");
+    expect(trigger).toHaveFocus();
+
+    await user.keyboard("{Enter}");
 
     const input = screen.getByLabelText("Doubles reliability");
     expect(input).toHaveStyle({ minWidth: "4ch", width: "4ch" });

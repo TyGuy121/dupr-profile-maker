@@ -51,6 +51,12 @@ export default function EditableField({
     onChange(localValue);
   };
 
+  const activate = () => {
+    if (isEditing) {
+      setIsActive(true);
+    }
+  };
+
   if (isEditing && isActive) {
     return (
       <input
@@ -68,14 +74,33 @@ export default function EditableField({
     );
   }
 
+  const triggerClassName = `inline-block ${alignClassName} ${className} ${
+    isEditing ? "border-b border-dashed border-white/40 cursor-pointer" : ""
+  }`;
+
+  if (isEditing) {
+    return (
+      <span
+        role="button"
+        tabIndex={0}
+        aria-label={ariaLabel}
+        onClick={activate}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            activate();
+          }
+        }}
+        className={triggerClassName}
+        style={sharedStyle}
+      >
+        {value}
+      </span>
+    );
+  }
+
   return (
-    <span
-      onClick={() => isEditing && setIsActive(true)}
-      className={`inline-block ${alignClassName} ${className} ${
-        isEditing ? "border-b border-dashed border-white/40 cursor-pointer" : ""
-      }`}
-      style={sharedStyle}
-    >
+    <span className={triggerClassName} style={sharedStyle}>
       {value}
     </span>
   );
