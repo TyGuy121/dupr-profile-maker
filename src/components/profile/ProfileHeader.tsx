@@ -68,7 +68,11 @@ export default function ProfileHeader({
         </div>
       </div>
 
-      <div className="mt-4 inline-flex rounded-full bg-white/10 p-1">
+      <div
+        role="tablist"
+        aria-label="Profile sections"
+        className="mt-4 inline-flex rounded-full bg-white/10 p-1"
+      >
         <TabButton
           label="Doubles"
           active={activeTab === "doubles"}
@@ -79,7 +83,12 @@ export default function ProfileHeader({
           active={activeTab === "singles"}
           onClick={() => onTabChange("singles")}
         />
-        <TabButton label="Clubs" active={false} />
+        <span
+          aria-disabled="true"
+          className="rounded-full px-4 py-2 text-sm font-semibold text-white/45"
+        >
+          Clubs
+        </span>
       </div>
     </div>
   );
@@ -96,8 +105,9 @@ function TabButton({
 }) {
   return (
     <button
+      role="tab"
       type="button"
-      aria-pressed={active}
+      aria-selected={active}
       onClick={onClick}
       className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
         active ? "bg-white text-[#05155E]" : "text-white/70"
