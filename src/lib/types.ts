@@ -27,8 +27,14 @@ export interface ProfileData {
   name: string;
   location: string;
   gender: string;
+  following: number;
   followers: number;
+  playerId: string;
   profilePhoto: string;
+  doublesRating: string;
+  doublesReliability: number;
+  singlesRating: string;
+  singlesReliability: number;
   doubles: TabProfileData;
   singles: TabProfileData;
 }
