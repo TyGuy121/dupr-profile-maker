@@ -30,6 +30,18 @@ describe("DuprProfile editing flow", () => {
 
     expect(screen.getByDisplayValue("Ty Root")).toBeInTheDocument();
   });
+
+  it("switches between doubles and singles values without changing Clubs", async () => {
+    const user = userEvent.setup();
+    render(<DuprProfile />);
+
+    expect(screen.getByText("3.032")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /singles/i }));
+    expect(screen.getByText("2.684")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /clubs/i }));
+    expect(screen.getByText("2.684")).toBeInTheDocument();
+  });
 });
 
 describe("editing primitives", () => {

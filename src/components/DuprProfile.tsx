@@ -1,25 +1,84 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { ProfileData } from "@/lib/types";
+import { ActiveTab, ProfileData } from "@/lib/types";
 import { defaultProfile } from "@/lib/defaults";
 import { captureProfile } from "@/lib/saveAsPhoto";
-import EditableField from "./EditableField";
-import PhotoUploader from "./PhotoUploader";
-import ProgressRing from "./ProgressRing";
+import ProfileHeader from "./profile/ProfileHeader";
+import RatingHero from "./profile/RatingHero";
 
 export default function DuprProfile() {
   const [profile, setProfile] = useState<ProfileData>(defaultProfile);
+  const [activeTab, setActiveTab] = useState<ActiveTab>("doubles");
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [activeCard, setActiveCard] = useState<"doubles" | "singles">("doubles");
   const captureRef = useRef<HTMLDivElement>(null);
+  const currentTab = profile[activeTab];
 
   const update = <K extends keyof ProfileData>(
     key: K,
     value: ProfileData[K]
   ) => {
     setProfile((p) => ({ ...p, [key]: value }));
+  };
+
+  const updateProfileField = (
+    field: "name" | "location" | "gender" | "followers",
+    value: string
+  ) => {
+    if (field === "followers") {
+      update("followers", parseInt(value, 10) || 0);
+      return;
+    }
+
+    update(field, value);
+  };
+
+  const updateCurrentTab = (
+    field: "rating" | "careerHigh",
+    value: string
+  ) => {
+    setProfile((previous) => {
+      const nextTab = {
+        ...previous[activeTab],
+        [field]: value,
+      };
+      const nextProfile: ProfileData = {
+        ...previous,
+        [activeTab]: nextTab,
+      };
+
+      if (field === "rating") {
+        if (activeTab === "doubles") {
+          nextProfile.doublesRating = value;
+        } else {
+          nextProfile.singlesRating = value;
+        }
+      }
+
+      return nextProfile;
+    });
+  };
+
+  const updateCurrentReliability = (value: number) => {
+    setProfile((previous) => {
+      const nextTab = {
+        ...previous[activeTab],
+        reliability: value,
+      };
+      const nextProfile: ProfileData = {
+        ...previous,
+        [activeTab]: nextTab,
+      };
+
+      if (activeTab === "doubles") {
+        nextProfile.doublesReliability = value;
+      } else {
+        nextProfile.singlesReliability = value;
+      }
+
+      return nextProfile;
+    });
   };
 
   const handleSave = async () => {
@@ -70,7 +129,7 @@ export default function DuprProfile() {
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-3">
+        <div className="flex items-center justify-between px-5 pt-5">
           <h1 className="text-white text-2xl font-bold">My DUPR</h1>
           <div className="flex items-center gap-3">
             {/* Plus */}
@@ -94,90 +153,14 @@ export default function DuprProfile() {
           </div>
         </div>
 
-        {/* Profile Section */}
-        <div className="flex items-center gap-4 px-5 py-4">
-          <PhotoUploader
-            photo={profile.profilePhoto}
-            isEditing={isEditing}
-            onChange={(url) => update("profilePhoto", url)}
-          />
-          <div className="flex flex-col">
-            <EditableField
-              value={profile.name}
-              onChange={(v) => update("name", v)}
-              isEditing={isEditing}
-              className="text-white text-xl font-bold"
-            />
-            <div className="flex items-center gap-1 mt-1">
-              <EditableField
-                value={profile.location}
-                onChange={(v) => update("location", v)}
-                isEditing={isEditing}
-                className="text-white/60 text-sm"
-              />
-              <span className="text-white/60 text-sm"> &bull; </span>
-              <EditableField
-                value={profile.gender}
-                onChange={(v) => update("gender", v)}
-                isEditing={isEditing}
-                className="text-white/60 text-sm"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Row */}
-        <div className="flex justify-center gap-16 py-3">
-          <div className="flex flex-col items-center">
-            <EditableField
-              value={String(profile.following)}
-              onChange={(v) => update("following", parseInt(v) || 0)}
-              isEditing={isEditing}
-              className="text-white text-lg font-bold"
-              inputMode="numeric"
-            />
-            <span className="text-white/60 text-sm">Following</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <EditableField
-              value={String(profile.followers)}
-              onChange={(v) => update("followers", parseInt(v) || 0)}
-              isEditing={isEditing}
-              className="text-white text-lg font-bold"
-              inputMode="numeric"
-            />
-            <span className="text-white/60 text-sm">Followers</span>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex gap-3 px-5 py-2">
-          <button className="flex-1 bg-white/[0.15] rounded-full py-2.5 text-white text-sm font-medium">
-            Share Profile
-          </button>
-          <button className="flex-1 bg-white/[0.15] rounded-full py-2.5 text-white text-sm font-medium flex items-center justify-center gap-2">
-            <span>
-              ID:{" "}
-              <EditableField
-                value={profile.playerId}
-                onChange={(v) => update("playerId", v)}
-                isEditing={isEditing}
-                className="text-white text-sm font-medium"
-              />
-            </span>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-            </svg>
-          </button>
-        </div>
+        <ProfileHeader
+          profile={profile}
+          activeTab={activeTab}
+          isEditing={isEditing}
+          onTabChange={setActiveTab}
+          onFieldChange={updateProfileField}
+          onPhotoChange={(url) => update("profilePhoto", url)}
+        />
 
         {/* Purchase Button */}
         <div className="px-5 py-2">
@@ -203,114 +186,12 @@ export default function DuprProfile() {
           </button>
         </div>
 
-        {/* Ratings Section */}
-        <div className="flex gap-3 px-4 py-3">
-          {/* Doubles */}
-          <div
-            className={`flex-1 rounded-2xl px-4 py-3 cursor-pointer transition-all ${activeCard === "doubles" ? "bg-white/[0.12]" : "bg-white/[0.06]"}`}
-            onClick={() => setActiveCard("doubles")}
-          >
-            <div className="flex items-center gap-2 mb-1">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={activeCard === "doubles" ? "white" : "rgba(255,255,255,0.6)"}
-                strokeWidth="2"
-              >
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-              <span className={`text-xs font-medium ${activeCard === "doubles" ? "text-white" : "text-white/60"}`}>Doubles</span>
-              <div className="relative ml-auto">
-                <ProgressRing
-                  value={profile.doublesReliability}
-                  size={38}
-                  strokeWidth={5}
-                  color={activeCard === "doubles" ? undefined : "rgba(255,255,255,0.3)"}
-                />
-                <span className="absolute inset-0 flex items-center justify-center text-white text-[10px] font-bold">
-                  <EditableField
-                    value={String(profile.doublesReliability)}
-                    onChange={(v) =>
-                      update(
-                        "doublesReliability",
-                        Math.min(100, Math.max(0, parseInt(v) || 0))
-                      )
-                    }
-                    isEditing={isEditing && activeCard === "doubles"}
-                    className="text-white text-[10px] font-bold"
-                    inputMode="numeric"
-                    inputClassName="!w-8 text-center text-[10px]"
-                  />
-                </span>
-              </div>
-            </div>
-            <EditableField
-              value={profile.doublesRating}
-              onChange={(v) => update("doublesRating", v)}
-              isEditing={isEditing && activeCard === "doubles"}
-              className={`text-4xl font-bold ${activeCard === "doubles" ? "text-white" : "text-white/60"}`}
-              inputMode="decimal"
-            />
-          </div>
-
-          {/* Singles */}
-          <div
-            className={`flex-1 rounded-2xl px-4 py-3 cursor-pointer transition-all ${activeCard === "singles" ? "bg-white/[0.12]" : "bg-white/[0.06]"}`}
-            onClick={() => setActiveCard("singles")}
-          >
-            <div className="flex items-center gap-2 mb-1">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={activeCard === "singles" ? "white" : "rgba(255,255,255,0.6)"}
-                strokeWidth="2"
-              >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              <span className={`text-xs font-medium ${activeCard === "singles" ? "text-white" : "text-white/60"}`}>Singles</span>
-              <div className="relative ml-auto">
-                <ProgressRing
-                  value={profile.singlesReliability}
-                  size={38}
-                  strokeWidth={5}
-                  color={activeCard === "singles" ? undefined : "rgba(255,255,255,0.3)"}
-                />
-                {(profile.singlesReliability > 0 || activeCard === "singles") && (
-                  <span className="absolute inset-0 flex items-center justify-center text-white text-[10px] font-bold">
-                    <EditableField
-                      value={String(profile.singlesReliability)}
-                      onChange={(v) =>
-                        update(
-                          "singlesReliability",
-                          Math.min(100, Math.max(0, parseInt(v) || 0))
-                        )
-                      }
-                      isEditing={isEditing && activeCard === "singles"}
-                      className="text-white text-[10px] font-bold"
-                      inputMode="numeric"
-                      inputClassName="!w-8 text-center text-[10px]"
-                    />
-                  </span>
-                )}
-              </div>
-            </div>
-            <EditableField
-              value={profile.singlesRating}
-              onChange={(v) => update("singlesRating", v)}
-              isEditing={isEditing && activeCard === "singles"}
-              className={`text-4xl font-bold ${activeCard === "singles" ? "text-white" : "text-white/60"}`}
-              inputMode="decimal"
-            />
-          </div>
-        </div>
+        <RatingHero
+          tabData={currentTab}
+          isEditing={isEditing}
+          onRatingChange={updateCurrentTab}
+          onReliabilityChange={updateCurrentReliability}
+        />
 
         {/* Tab Bar */}
         <div className="flex items-center gap-6 px-5 py-3">
