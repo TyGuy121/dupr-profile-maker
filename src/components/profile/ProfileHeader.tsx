@@ -55,42 +55,17 @@ export default function ProfileHeader({
               className="text-sm text-white/70"
             />
           </div>
-          <div className="mt-3 flex items-end gap-8">
-            <div className="flex flex-col">
-              <span className="text-lg font-bold text-white">{profile.following}</span>
-              <span className="text-xs uppercase tracking-wide text-white/60">
-                Following
-              </span>
-            </div>
-            <div className="flex flex-col">
-              <EditableField
-                value={String(profile.followers)}
-                onChange={(value) => onFieldChange("followers", value)}
-                isEditing={isEditing}
-                className="text-lg font-bold text-white"
-                inputMode="numeric"
-              />
-              <span className="text-xs uppercase tracking-wide text-white/60">
-                Followers
-              </span>
-            </div>
+          <div className="mt-3 inline-flex items-center rounded-full bg-white/12 px-3 py-1.5 text-sm font-medium text-white">
+            <EditableField
+              value={String(profile.followers)}
+              onChange={(value) => onFieldChange("followers", value)}
+              isEditing={isEditing}
+              className="text-sm font-semibold text-white"
+              inputMode="numeric"
+            />
+            <span className="ml-1 text-white/75">Followers</span>
           </div>
         </div>
-      </div>
-
-      <div className="mt-4 flex gap-2">
-        <button
-          type="button"
-          className="flex-1 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white"
-        >
-          Share Profile
-        </button>
-        <button
-          type="button"
-          className="rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white"
-        >
-          Clubs
-        </button>
       </div>
 
       <div className="mt-4 inline-flex rounded-full bg-white/10 p-1">
@@ -104,6 +79,7 @@ export default function ProfileHeader({
           active={activeTab === "singles"}
           onClick={() => onTabChange("singles")}
         />
+        <TabButton label="Clubs" active={false} />
       </div>
     </div>
   );
@@ -116,7 +92,7 @@ function TabButton({
 }: {
   label: string;
   active: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }) {
   return (
     <button

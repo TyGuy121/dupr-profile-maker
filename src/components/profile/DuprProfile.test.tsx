@@ -42,6 +42,22 @@ describe("DuprProfile editing flow", () => {
     await user.click(screen.getByRole("button", { name: /clubs/i }));
     expect(screen.getByText("2.684")).toBeInTheDocument();
   });
+
+  it("renders Clubs inside the visible tab strip and removes share profile from the header", () => {
+    render(<DuprProfile />);
+
+    expect(screen.queryByRole("button", { name: /share profile/i })).not.toBeInTheDocument();
+
+    const doubles = screen.getByRole("button", { name: /doubles/i });
+    const singles = screen.getByRole("button", { name: /singles/i });
+    const clubs = screen.getByRole("button", { name: /clubs/i });
+
+    expect(doubles.parentElement).toBe(singles.parentElement);
+    expect(clubs.parentElement).toBe(doubles.parentElement);
+    expect(
+      screen.getByText((_, element) => element?.textContent === "7Followers")
+    ).toBeInTheDocument();
+  });
 });
 
 describe("editing primitives", () => {
