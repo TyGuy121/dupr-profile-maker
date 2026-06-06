@@ -5,9 +5,17 @@ import DuprProfile from "@/components/DuprProfile";
 import EditableField from "@/components/EditableField";
 import PhotoUploader from "@/components/PhotoUploader";
 import ProgressRing from "@/components/ProgressRing";
+import { resizeImage } from "@/lib/resizeImage";
+
+vi.mock("@/lib/resizeImage", () => ({
+  resizeImage: vi.fn(),
+}));
+
+const resizeImageMock = vi.mocked(resizeImage);
 
 afterEach(() => {
   cleanup();
+  vi.clearAllMocks();
 });
 
 describe("DuprProfile editing flow", () => {
@@ -27,10 +35,11 @@ describe("DuprProfile editing flow", () => {
 describe("editing primitives", () => {
   it("adds an accessible label, stable minimum width, and keyboard activation for editable numeric fields", async () => {
     const user = userEvent.setup();
-    render(
+    const onChange = vi.fn();
+    const { rerender } = render(
       <EditableField
         value="90"
-        onChange={vi.fn()}
+        onChange={onChange}
         isEditing
         ariaLabel="Doubles reliability"
         minWidthCh={4}
@@ -45,7 +54,33 @@ describe("editing primitives", () => {
 
     await user.keyboard("{Enter}");
 
-    const input = screen.getByLabelText("Doubles reliability");
+    let input = screen.getByLabelText("Doubles reliability");
+    expect(input).toHaveStyle({ minWidth: "4ch", width: "4ch" });
+    expect(input).toHaveClass("text-center");
+
+    await user.clear(input);
+    await user.type(input, "91");
+    await user.tab();
+
+    expect(onChange).toHaveBeenCalledWith("91");
+
+    rerender(
+      <EditableField
+        value="90"
+        onChange={vi.fn()}
+        isEditing
+        ariaLabel="Doubles reliability"
+        minWidthCh={4}
+        alignClassName="text-center"
+      />
+    );
+
+    await user.tab();
+    expect(screen.getByText("90")).toHaveFocus();
+
+    await user.keyboard(" ");
+
+    input = screen.getByLabelText("Doubles reliability");
     expect(input).toHaveStyle({ minWidth: "4ch", width: "4ch" });
     expect(input).toHaveClass("text-center");
   });
@@ -77,6 +112,30 @@ describe("editing primitives", () => {
     expect(
       screen.getByRole("button", { name: /change profile photo/i })
     ).toBeInTheDocument();
+  });
+
+  it("swallows resize failures and clears the file input so the same file can be retried", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    resizeImageMock.mockRejectedValue(new Error("resize failed"));
+
+    render(<PhotoUploader photo="" isEditing onChange={onChange} />);
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File(["avatar"], "avatar.png", { type: "image/png" });
+
+    await user.upload(input, file);
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(input.value).toBe("");
+
+    await user.upload(input, file);
+
+    expect(resizeImageMock).toHaveBeenCalledTimes(2);
+    expect(input.value).toBe("");
+
+    consoleError.mockRestore();
   });
 
   it("renders optional overlay content inside the progress ring", () => {

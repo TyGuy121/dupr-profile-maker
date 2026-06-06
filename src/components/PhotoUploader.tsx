@@ -29,9 +29,14 @@ export default function PhotoUploader({
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const resized = await resizeImage(file);
-    onChange(resized);
-    e.target.value = "";
+    try {
+      const resized = await resizeImage(file);
+      onChange(resized);
+    } catch {
+      // Keep upload retries possible even if client-side resizing fails.
+    } finally {
+      e.target.value = "";
+    }
   };
 
   return (
