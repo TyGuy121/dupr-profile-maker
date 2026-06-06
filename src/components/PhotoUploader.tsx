@@ -7,12 +7,22 @@ interface PhotoUploaderProps {
   photo: string;
   isEditing: boolean;
   onChange: (dataUrl: string) => void;
+  className?: string;
+  imageClassName?: string;
+  overlayClassName?: string;
+  showCameraBadge?: boolean;
+  cameraBadgeClassName?: string;
 }
 
 export default function PhotoUploader({
   photo,
   isEditing,
   onChange,
+  className = "",
+  imageClassName = "",
+  overlayClassName = "",
+  showCameraBadge = false,
+  cameraBadgeClassName = "",
 }: PhotoUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -25,18 +35,17 @@ export default function PhotoUploader({
   };
 
   return (
-    <div
-      className="relative w-24 h-24 flex-shrink-0"
-      onClick={() => isEditing && inputRef.current?.click()}
-    >
+    <div className={`relative w-24 h-24 flex-shrink-0 ${className}`}>
       {photo ? (
         <img
           src={photo}
           alt="Profile"
-          className="w-24 h-24 rounded-full border-[3px] border-white object-cover"
+          className={`h-full w-full rounded-full border-[3px] border-white object-cover ${imageClassName}`}
         />
       ) : (
-        <div className="w-24 h-24 rounded-full border-[3px] border-white bg-white/20 flex items-center justify-center">
+        <div
+          className={`flex h-full w-full items-center justify-center rounded-full border-[3px] border-white bg-white/20 ${imageClassName}`}
+        >
           <svg
             width="40"
             height="40"
@@ -50,8 +59,31 @@ export default function PhotoUploader({
           </svg>
         </div>
       )}
+      {showCameraBadge && (
+        <div
+          className={`absolute right-0 top-0 flex h-7 w-7 items-center justify-center rounded-full border border-white/30 bg-[#05155E] text-white shadow-md ${cameraBadgeClassName}`}
+          aria-hidden="true"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+        </div>
+      )}
       {isEditing && (
-        <div className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center cursor-pointer">
+        <button
+          type="button"
+          aria-label="Change profile photo"
+          className={`absolute inset-0 flex items-center justify-center rounded-full bg-black/40 cursor-pointer ${overlayClassName}`}
+          onClick={() => inputRef.current?.click()}
+        >
           <svg
             width="24"
             height="24"
@@ -63,7 +95,7 @@ export default function PhotoUploader({
             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
             <circle cx="12" cy="13" r="4" />
           </svg>
-        </div>
+        </button>
       )}
       <input
         ref={inputRef}
