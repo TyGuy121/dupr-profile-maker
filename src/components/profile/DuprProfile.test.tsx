@@ -86,6 +86,32 @@ describe("DuprProfile editing flow", () => {
 
     expect(screen.getByLabelText("Rating reliability")).toBeInTheDocument();
   });
+
+  it("keeps gray labels fixed while editing performance values", async () => {
+    const user = userEvent.setup();
+    render(<DuprProfile />);
+
+    await user.click(screen.getByRole("button", { name: /edit profile/i }));
+    await user.click(screen.getByText("15-15"));
+    await user.keyboard("16-15{Enter}");
+
+    expect(screen.getByText("Record (W-L)")).toBeInTheDocument();
+    expect(screen.getByText("16-15")).toBeInTheDocument();
+  });
+
+  it("edits the match adjustment, rating transition, and date for the active tab", async () => {
+    const user = userEvent.setup();
+    render(<DuprProfile />);
+
+    await user.click(screen.getByRole("button", { name: /edit profile/i }));
+    await user.click(screen.getByText("+0.100"));
+    await user.keyboard("+0.125{Enter}");
+
+    expect(screen.getByText("+0.125")).toBeInTheDocument();
+    expect(screen.getByText("2.932")).toBeInTheDocument();
+    expect(screen.getByText("3.032")).toBeInTheDocument();
+    expect(screen.getByText("June 1, 2026")).toBeInTheDocument();
+  });
 });
 
 describe("editing primitives", () => {

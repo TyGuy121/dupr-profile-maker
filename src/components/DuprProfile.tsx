@@ -1,11 +1,19 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { ActiveTab, ProfileData } from "@/lib/types";
+import {
+  ActiveTab,
+  MatchCardData,
+  PerformanceStats,
+  ProfileData,
+  TabProfileData,
+} from "@/lib/types";
 import { defaultProfile } from "@/lib/defaults";
 import { captureProfile } from "@/lib/saveAsPhoto";
 import ProfileHeader from "./profile/ProfileHeader";
 import RatingHero from "./profile/RatingHero";
+import PerformanceGrid from "./profile/PerformanceGrid";
+import MatchesCard from "./profile/MatchesCard";
 
 export default function DuprProfile() {
   const [profile, setProfile] = useState<ProfileData>(defaultProfile);
@@ -78,6 +86,39 @@ export default function DuprProfile() {
       }
 
       return nextProfile;
+    });
+  };
+
+  const updateTabField = <K extends keyof TabProfileData>(
+    field: K,
+    value: TabProfileData[K]
+  ) => {
+    setProfile((previous) => ({
+      ...previous,
+      [activeTab]: {
+        ...previous[activeTab],
+        [field]: value,
+      },
+    }));
+  };
+
+  const updatePerformanceField = (
+    field: keyof PerformanceStats,
+    value: string
+  ) => {
+    updateTabField("performance", {
+      ...currentTab.performance,
+      [field]: value,
+    });
+  };
+
+  const updateMatchField = (
+    field: keyof MatchCardData,
+    value: string
+  ) => {
+    updateTabField("match", {
+      ...currentTab.match,
+      [field]: value,
     });
   };
 
@@ -202,9 +243,16 @@ export default function DuprProfile() {
             Activity
           </button>
         </div>
-
-        {/* Spacer to fill remaining space */}
-        <div className="flex-1 min-h-[120px]" />
+        <PerformanceGrid
+          performance={currentTab.performance}
+          isEditing={isEditing}
+          onChange={updatePerformanceField}
+        />
+        <MatchesCard
+          match={currentTab.match}
+          isEditing={isEditing}
+          onChange={updateMatchField}
+        />
 
         {/* Bottom Navigation */}
         <div className="flex items-center justify-around py-2 pb-4 border-t border-white/10 bg-[#05155E]">
