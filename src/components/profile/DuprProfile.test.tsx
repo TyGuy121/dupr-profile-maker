@@ -34,17 +34,19 @@ describe("DuprProfile editing flow", () => {
   it("switches between doubles and singles values without changing Clubs", async () => {
     const user = userEvent.setup();
     render(<DuprProfile />);
-    const tabStrip = screen.getByRole("tablist", { name: /profile sections/i });
+    const doublesButton = screen.getByRole("button", { name: /doubles/i });
+    const singlesButton = screen.getByRole("button", { name: /singles/i });
+    const segmentedControl = doublesButton.parentElement;
 
     expect(screen.getByText("3.032")).toBeInTheDocument();
-    expect(within(tabStrip).getByText("Clubs")).toBeInTheDocument();
-    expect(
-      within(tabStrip).queryByRole("button", { name: /clubs/i })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("tablist", { name: /profile sections/i })).not.toBeInTheDocument();
+    expect(segmentedControl).not.toBeNull();
+    expect(within(segmentedControl as HTMLElement).getByText("Clubs")).toBeInTheDocument();
+    expect(within(segmentedControl as HTMLElement).queryByRole("button", { name: /clubs/i })).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("tab", { name: /singles/i }));
+    await user.click(singlesButton);
     expect(screen.getByText("2.684")).toBeInTheDocument();
-    expect(within(tabStrip).getByText("Clubs")).toBeInTheDocument();
+    expect(within(segmentedControl as HTMLElement).getByText("Clubs")).toBeInTheDocument();
     expect(screen.getByText("2.684")).toBeInTheDocument();
   });
 
@@ -55,18 +57,17 @@ describe("DuprProfile editing flow", () => {
       screen.queryByRole("button", { name: /share profile/i })
     ).not.toBeInTheDocument();
 
-    const tabStrip = screen.getByRole("tablist", { name: /profile sections/i });
-    const doubles = within(tabStrip).getByRole("tab", { name: /doubles/i });
-    const singles = within(tabStrip).getByRole("tab", { name: /singles/i });
-    const clubs = within(tabStrip).getByText("Clubs");
+    const doubles = screen.getByRole("button", { name: /doubles/i });
+    const singles = screen.getByRole("button", { name: /singles/i });
+    const segmentedControl = doubles.parentElement as HTMLElement;
+    const clubs = within(segmentedControl).getByText("Clubs");
 
     expect(doubles.parentElement).toBe(singles.parentElement);
     expect(clubs.parentElement).toBe(doubles.parentElement);
-    expect(doubles).toHaveAttribute("aria-selected", "true");
-    expect(singles).toHaveAttribute("aria-selected", "false");
-    expect(
-      within(tabStrip).queryByRole("button", { name: /clubs/i })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("tablist", { name: /profile sections/i })).not.toBeInTheDocument();
+    expect(doubles).not.toHaveAttribute("role", "tab");
+    expect(singles).not.toHaveAttribute("role", "tab");
+    expect(within(segmentedControl).queryByRole("button", { name: /clubs/i })).not.toBeInTheDocument();
     const followerPill = screen.getByText("Followers").parentElement;
     expect(followerPill).not.toBeNull();
     expect(followerPill).toHaveTextContent(/^7/);

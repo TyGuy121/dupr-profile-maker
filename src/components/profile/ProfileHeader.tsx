@@ -68,11 +68,7 @@ export default function ProfileHeader({
         </div>
       </div>
 
-      <div
-        role="tablist"
-        aria-label="Profile sections"
-        className="mt-4 inline-flex rounded-full bg-white/10 p-1"
-      >
+      <div className="mt-4 inline-flex rounded-full bg-white/10 p-1">
         <TabButton
           label="Doubles"
           active={activeTab === "doubles"}
@@ -105,9 +101,7 @@ function TabButton({
 }) {
   return (
     <button
-      role="tab"
       type="button"
-      aria-selected={active}
       onClick={onClick}
       className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
         active ? "bg-white text-[#05155E]" : "text-white/70"
