@@ -1,8 +1,9 @@
 "use client";
 
+import { MessageCircle, Plus, Settings, Share2 } from "lucide-react";
 import PhotoUploader from "@/components/PhotoUploader";
 import EditableField from "@/components/EditableField";
-import { ProfileData, ActiveTab } from "@/lib/types";
+import { ActiveTab, ProfileData } from "@/lib/types";
 
 type ProfileHeaderProps = {
   profile: ProfileData;
@@ -25,50 +26,73 @@ export default function ProfileHeader({
   onPhotoChange,
 }: ProfileHeaderProps) {
   return (
-    <div className="px-5 pb-3 pt-5">
-      <div className="flex items-start gap-4">
+    <div className="bg-white px-4 pb-2 pt-3 text-[#1f1f1f]">
+      <div className="flex items-center justify-between">
+        <IconButton label="Settings" icon={<Settings size={24} strokeWidth={2.05} />} />
+        <div className="flex items-center gap-1.5 text-[#1f1f1f]">
+          <IconButton label="Add" icon={<Plus size={20} strokeWidth={2.1} />} />
+          <IconButton label="Messages" icon={<MessageCircle size={20} strokeWidth={2.1} />} />
+          <IconButton label="Share" icon={<Share2 size={20} strokeWidth={2.1} />} />
+        </div>
+      </div>
+
+      <div className="mt-6 flex items-start gap-3">
         <PhotoUploader
           photo={profile.profilePhoto}
           isEditing={isEditing}
           onChange={onPhotoChange}
+          className="h-16 w-16"
+          imageClassName="h-16 w-16 border-[#f1f2f6]"
           showCameraBadge
+          cameraBadgeClassName="h-5 w-5 bg-[#4b76d9]"
         />
-        <div className="min-w-0 flex-1">
-          <EditableField
-            value={profile.name}
-            onChange={(value) => onFieldChange("name", value)}
-            isEditing={isEditing}
-            className="text-xl font-bold text-white"
-          />
-          <div className="mt-1 flex flex-wrap items-center gap-1 text-sm text-white/70">
-            <EditableField
-              value={profile.location}
-              onChange={(value) => onFieldChange("location", value)}
-              isEditing={isEditing}
-              className="text-sm text-white/70"
-            />
-            <span aria-hidden="true">•</span>
-            <EditableField
-              value={profile.gender}
-              onChange={(value) => onFieldChange("gender", value)}
-              isEditing={isEditing}
-              className="text-sm text-white/70"
-            />
-          </div>
-          <div className="mt-3 inline-flex items-center rounded-full bg-white/12 px-3 py-1.5 text-sm font-medium text-white">
-            <EditableField
-              value={String(profile.followers)}
-              onChange={(value) => onFieldChange("followers", value)}
-              isEditing={isEditing}
-              className="text-sm font-semibold text-white"
-              inputMode="numeric"
-            />
-            <span className="ml-1 text-white/75">Followers</span>
+
+        <div className="min-w-0 flex-1 pt-0.5">
+          <div className="flex items-start gap-3">
+            <div className="min-w-0 flex-1">
+              <EditableField
+                value={profile.name}
+                onChange={(value) => onFieldChange("name", value)}
+                isEditing={isEditing}
+                className="block text-[20px] font-semibold leading-none tracking-[-0.02em] text-[#1f1f1f]"
+              />
+              <div className="mt-1 flex flex-wrap items-center gap-1 text-[15px] leading-tight text-[#8d8f99]">
+                <EditableField
+                  value={profile.location}
+                  onChange={(value) => onFieldChange("location", value)}
+                  isEditing={isEditing}
+                  className="text-[15px] text-[#8d8f99]"
+                />
+                <span aria-hidden="true">•</span>
+                <EditableField
+                  value={profile.gender}
+                  onChange={(value) => onFieldChange("gender", value)}
+                  isEditing={isEditing}
+                  className="text-[15px] text-[#8d8f99]"
+                />
+              </div>
+            </div>
+
+            <div
+              aria-label="Followers count"
+              className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#f1f2f6] px-3 py-1.5 text-[16px] font-medium text-[#1f1f1f]"
+            >
+              <PeopleIcon />
+              <EditableField
+                value={String(profile.followers)}
+                onChange={(value) => onFieldChange("followers", value)}
+                isEditing={isEditing}
+                className="text-[16px] font-medium text-[#1f1f1f]"
+                inputMode="numeric"
+                ariaLabel="Followers"
+                minWidthCh={1}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 inline-flex rounded-full bg-white/10 p-1">
+      <div className="mt-4 flex items-end gap-6 border-b border-[#e5e7ef]">
         <TabButton
           label="Doubles"
           active={activeTab === "doubles"}
@@ -79,12 +103,7 @@ export default function ProfileHeader({
           active={activeTab === "singles"}
           onClick={() => onTabChange("singles")}
         />
-        <span
-          aria-disabled="true"
-          className="rounded-full px-4 py-2 text-sm font-semibold text-white/45"
-        >
-          Clubs
-        </span>
+        <span className="pb-3 text-[15px] font-medium text-[#8d8f99]">Clubs</span>
       </div>
     </div>
   );
@@ -97,17 +116,48 @@ function TabButton({
 }: {
   label: string;
   active: boolean;
-  onClick?: () => void;
+  onClick: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-        active ? "bg-white text-[#05155E]" : "text-white/70"
+      className={`border-b-2 pb-3 text-[15px] font-medium ${
+        active
+          ? "border-[#4b76d9] text-[#1f1f1f]"
+          : "border-transparent text-[#8d8f99]"
       }`}
     >
       {label}
     </button>
+  );
+}
+
+function IconButton({
+  label,
+  icon,
+}: {
+  label: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      className="flex h-7 w-7 items-center justify-center rounded-full text-[#1f1f1f]"
+    >
+      {icon}
+    </button>
+  );
+}
+
+function PeopleIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
   );
 }

@@ -4,45 +4,45 @@ import { defaultProfile } from "@/lib/defaults";
 describe("defaultProfile", () => {
   it("provides the expected nested doubles and singles profile data", () => {
     expect(defaultProfile).toMatchObject({
-      name: "Ty Root",
-      location: "Travis County, TX, US",
-      gender: "Male",
-      followers: 7,
+      name: "Jane Doe",
+      location: "United States",
+      gender: "Female",
+      followers: 0,
       profilePhoto: "",
       doubles: {
-        rating: "3.032",
-        reliability: 90,
-        careerHigh: "3.362",
+        rating: "0.000",
+        reliability: 0,
+        careerHigh: "0.000",
         performance: {
           mixedRating: "NR",
-          record: "15-15",
-          avgPartner: "3.150",
-          avgOpponent: "3.230",
-          avgPointsWon: "49.19%",
+          record: "0-0",
+          avgPartner: "0.000",
+          avgOpponent: "0.000",
+          avgPointsWon: "0.00%",
         },
         match: {
-          adjustment: "+0.100",
-          ratingStart: "2.932",
-          ratingEnd: "3.032",
-          date: "June 1, 2026",
+          adjustment: "+0.000",
+          ratingStart: "0.000",
+          ratingEnd: "0.000",
+          date: "TBD",
         },
       },
       singles: {
-        rating: "2.684",
-        reliability: 61,
-        careerHigh: "2.910",
+        rating: "0.000",
+        reliability: 0,
+        careerHigh: "0.000",
         performance: {
           mixedRating: "NR",
-          record: "8-6",
-          avgPartner: "2.740",
-          avgOpponent: "2.810",
-          avgPointsWon: "52.04%",
+          record: "0-0",
+          avgPartner: "0.000",
+          avgOpponent: "0.000",
+          avgPointsWon: "0.00%",
         },
         match: {
-          adjustment: "+0.042",
-          ratingStart: "2.642",
-          ratingEnd: "2.684",
-          date: "May 24, 2026",
+          adjustment: "+0.000",
+          ratingStart: "0.000",
+          ratingEnd: "0.000",
+          date: "TBD",
         },
       },
     });
@@ -51,8 +51,8 @@ describe("defaultProfile", () => {
   });
 
   it("keeps legacy flat fields available while the component still consumes them", () => {
-    expect(defaultProfile.following).toBe(3);
-    expect(defaultProfile.playerId).toBe("R7NX3P");
+    expect(defaultProfile.following).toBe(0);
+    expect(defaultProfile.playerId).toBe("XXXXXX");
     expect(defaultProfile.doublesRating).toBe(defaultProfile.doubles.rating);
     expect(defaultProfile.doublesReliability).toBe(defaultProfile.doubles.reliability);
     expect(defaultProfile.singlesRating).toBe(defaultProfile.singles.rating);

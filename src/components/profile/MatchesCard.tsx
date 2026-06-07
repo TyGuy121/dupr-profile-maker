@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import EditableField from "@/components/EditableField";
 import { MatchCardData } from "@/lib/types";
 
@@ -16,53 +15,54 @@ export default function MatchesCard({
   onChange,
 }: MatchesCardProps) {
   return (
-    <div className="px-4 pb-4">
-      <div className="rounded-[28px] bg-[#05155E]/55 px-5 py-4 text-white">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <p className="text-xs font-medium uppercase text-white/60">
-              Recent Match
-            </p>
-            <EditableField
-              value={match.adjustment}
-              onChange={(value) => onChange("adjustment", value)}
-              isEditing={isEditing}
-              className="mt-2 text-3xl font-bold text-white"
-              inputMode="decimal"
-            />
-          </div>
+    <section className="bg-white px-4 py-6">
+      <div className="rounded-[28px] border border-[#e4e7ef] bg-white px-5 py-5 shadow-[0_2px_10px_rgba(15,23,42,0.03)]">
+        <div className="flex items-start justify-between gap-4">
+          <span className="rounded-full bg-[#fbf0e2] px-3 py-1 text-[12px] font-semibold uppercase tracking-wide text-[#b57b3a]">
+            ADJUSTMENT
+          </span>
+          <EditableField
+            value={match.adjustment}
+            onChange={(value) => onChange("adjustment", value)}
+            isEditing={isEditing}
+            className="text-[18px] font-semibold text-[#0ca04d]"
+            inputMode="decimal"
+          />
+        </div>
+
+        <p className="mt-5 text-[18px] font-medium text-[#5b5e69]">
+          DUPR Reset March 2026
+        </p>
+
+        <div className="mt-10 text-center text-[30px] font-semibold tracking-tight text-[#1f1f1f]">
+          <EditableField
+            value={match.ratingStart}
+            onChange={(value) => onChange("ratingStart", value)}
+            isEditing={isEditing}
+            className="text-[30px] font-semibold tracking-tight text-[#1f1f1f]"
+            inputMode="decimal"
+          />
+          <span className="mx-2 text-[#1f1f1f]">→</span>
+          <PrefixedEditableField
+            value={match.ratingEnd}
+            onChange={(value) => onChange("ratingEnd", value)}
+            isEditing={isEditing}
+            prefix=""
+            className="text-[30px] font-semibold tracking-tight text-[#1f1f1f]"
+            inputMode="decimal"
+          />
+        </div>
+
+        <div className="mt-10 text-right text-[18px] font-medium text-[#b4b7c1]">
           <EditableField
             value={match.date}
             onChange={(value) => onChange("date", value)}
             isEditing={isEditing}
-            className="text-right text-sm text-white/75"
+            className="text-[18px] font-medium text-[#b4b7c1]"
           />
         </div>
-
-        <div className="mt-4 rounded-2xl bg-white/10 px-4 py-3">
-          <p className="text-xs font-medium uppercase text-white/60">
-            Rating Change
-          </p>
-          <div className="mt-2 flex items-center gap-3 text-white">
-            <EditableField
-              value={match.ratingStart}
-              onChange={(value) => onChange("ratingStart", value)}
-              isEditing={isEditing}
-              className="text-lg font-semibold text-white"
-              inputMode="decimal"
-            />
-            <PrefixedEditableField
-              value={match.ratingEnd}
-              onChange={(value) => onChange("ratingEnd", value)}
-              isEditing={isEditing}
-              prefix="→ "
-              className="text-lg font-semibold text-white"
-              inputMode="decimal"
-            />
-          </div>
-        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -81,71 +81,17 @@ function PrefixedEditableField({
   className: string;
   inputMode: "text" | "decimal" | "numeric";
 }) {
-  const [isActive, setIsActive] = useState(false);
-  const [localValue, setLocalValue] = useState(value);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setLocalValue(value);
-  }, [value]);
-
-  useEffect(() => {
-    if (isActive) {
-      inputRef.current?.focus();
-      inputRef.current?.select();
-    }
-  }, [isActive]);
-
-  useEffect(() => {
-    if (!isEditing) {
-      setIsActive(false);
-    }
-  }, [isEditing]);
-
-  const commit = () => {
-    setIsActive(false);
-    onChange(localValue);
-  };
-
-  if (isEditing && isActive) {
-    return (
-      <input
-        ref={inputRef}
-        type="text"
-        value={localValue}
-        inputMode={inputMode}
-        onChange={(event) => setLocalValue(event.target.value)}
-        onBlur={commit}
-        onKeyDown={(event) => event.key === "Enter" && commit()}
-        className={`min-w-[5ch] rounded border border-white/30 bg-white/10 px-1 py-0.5 text-white outline-none ${className}`}
-      />
-    );
-  }
-
-  if (isEditing) {
-    return (
-      <span
-        role="button"
-        tabIndex={0}
-        onClick={() => setIsActive(true)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            setIsActive(true);
-          }
-        }}
-        className={`inline-block border-b border-dashed border-white/40 cursor-pointer ${className}`}
-      >
-        {prefix}
-        {value}
-      </span>
-    );
+  if (!isEditing) {
+    return <span className={className}>{prefix}{value}</span>;
   }
 
   return (
-    <span className={className}>
-      {prefix}
-      {value}
-    </span>
+    <EditableField
+      value={`${prefix}${value}`}
+      onChange={onChange}
+      isEditing={isEditing}
+      className={className}
+      inputMode={inputMode}
+    />
   );
 }

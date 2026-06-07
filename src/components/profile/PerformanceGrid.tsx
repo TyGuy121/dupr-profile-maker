@@ -1,13 +1,21 @@
+"use client";
+
 import EditableField from "@/components/EditableField";
 import { PerformanceStats } from "@/lib/types";
 
-const performanceCards = [
-  { key: "mixedRating", label: "Mixed Rating" },
+type PerformanceCard = {
+  key: keyof PerformanceStats;
+  label: string;
+  showInfo?: boolean;
+};
+
+const performanceCards: PerformanceCard[] = [
+  { key: "mixedRating", label: "Mixed Rating", showInfo: true },
   { key: "record", label: "Record (W-L)" },
   { key: "avgPartner", label: "Avg Partner" },
   { key: "avgOpponent", label: "Avg Opponent" },
   { key: "avgPointsWon", label: "Avg Points Won" },
-] as const;
+];
 
 type PerformanceGridProps = {
   performance: PerformanceStats;
@@ -21,23 +29,35 @@ export default function PerformanceGrid({
   onChange,
 }: PerformanceGridProps) {
   return (
-    <div className="grid grid-cols-2 gap-3 px-4 py-4">
-      {performanceCards.map(({ key, label }) => (
-        <div
-          key={key}
-          className={`rounded-2xl bg-white/10 px-4 py-3 text-white ${
-            key === "avgPointsWon" ? "col-span-2" : ""
-          }`}
-        >
-          <p className="text-xs font-medium text-white/60">{label}</p>
-          <EditableField
-            value={performance[key]}
-            onChange={(value) => onChange(key, value)}
-            isEditing={isEditing}
-            className="mt-2 text-lg font-semibold text-white"
-          />
-        </div>
-      ))}
-    </div>
+    <section className="bg-white px-4 pt-5">
+      <h2 className="text-[21px] font-semibold tracking-[-0.02em] text-[#1f1f1f]">Performance</h2>
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        {performanceCards.map(({ key, label, showInfo }) => (
+          <div
+            key={key}
+            className="min-h-[114px] rounded-[18px] bg-[#f4f4f6] px-4 py-4 text-[#1f1f1f]"
+          >
+            <div className="flex items-center gap-1 text-[24px] font-semibold leading-none tracking-[-0.02em]">
+              <EditableField
+                value={performance[key]}
+                onChange={(value) => onChange(key, value)}
+                isEditing={isEditing}
+                className="text-[24px] font-semibold leading-none tracking-[-0.02em] text-[#1f1f1f]"
+              />
+              {showInfo ? <InfoIcon /> : null}
+            </div>
+            <p className="mt-2 text-[14px] leading-tight text-[#8d8f99]">{label}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function InfoIcon() {
+  return (
+    <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#1f1f1f] text-[10px] leading-none text-[#1f1f1f]">
+      i
+    </span>
   );
 }

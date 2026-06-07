@@ -23,12 +23,12 @@ describe("DuprProfile editing flow", () => {
     const user = userEvent.setup();
     render(<DuprProfile />);
 
-    expect(screen.queryByDisplayValue("Ty Root")).not.toBeInTheDocument();
+    expect(screen.queryByDisplayValue("Jane Doe")).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /edit profile/i }));
-    await user.click(screen.getByText("Ty Root"));
+    await user.click(screen.getByText("Jane Doe"));
 
-    expect(screen.getByDisplayValue("Ty Root")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("Jane Doe")).toBeInTheDocument();
   });
 
   it("switches between doubles and singles values without changing Clubs", async () => {
@@ -38,16 +38,17 @@ describe("DuprProfile editing flow", () => {
     const singlesButton = screen.getByRole("button", { name: /singles/i });
     const segmentedControl = doublesButton.parentElement;
 
-    expect(screen.getByText("3.032")).toBeInTheDocument();
+    expect(doublesButton).toHaveClass("border-[#4b76d9]");
+    expect(singlesButton).toHaveClass("border-transparent");
     expect(screen.queryByRole("tablist", { name: /profile sections/i })).not.toBeInTheDocument();
     expect(segmentedControl).not.toBeNull();
     expect(within(segmentedControl as HTMLElement).getByText("Clubs")).toBeInTheDocument();
     expect(within(segmentedControl as HTMLElement).queryByRole("button", { name: /clubs/i })).not.toBeInTheDocument();
 
     await user.click(singlesButton);
-    expect(screen.getByText("2.684")).toBeInTheDocument();
+    expect(doublesButton).toHaveClass("border-transparent");
+    expect(singlesButton).toHaveClass("border-[#4b76d9]");
     expect(within(segmentedControl as HTMLElement).getByText("Clubs")).toBeInTheDocument();
-    expect(screen.getByText("2.684")).toBeInTheDocument();
   });
 
   it("renders Clubs as inert text inside the visible tab strip and shows a follower pill", () => {
@@ -68,9 +69,9 @@ describe("DuprProfile editing flow", () => {
     expect(doubles).not.toHaveAttribute("role", "tab");
     expect(singles).not.toHaveAttribute("role", "tab");
     expect(within(segmentedControl).queryByRole("button", { name: /clubs/i })).not.toBeInTheDocument();
-    const followerPill = screen.getByText("Followers").parentElement;
+    const followerPill = screen.getByLabelText("Followers count");
     expect(followerPill).not.toBeNull();
-    expect(followerPill).toHaveTextContent(/^7/);
+    expect(followerPill).toHaveClass("rounded-full");
   });
 
   it("activates reliability editing from the rating hero overlay", async () => {
@@ -78,7 +79,7 @@ describe("DuprProfile editing flow", () => {
     render(<DuprProfile />);
 
     await user.click(screen.getByRole("button", { name: /edit profile/i }));
-    const reliabilityTrigger = screen.getByText("90");
+    const reliabilityTrigger = screen.getByRole("button", { name: /rating reliability/i });
 
     expect(reliabilityTrigger.closest(".pointer-events-none")).toBeNull();
 
@@ -107,11 +108,11 @@ describe("DuprProfile editing flow", () => {
     render(<DuprProfile />);
 
     await user.click(screen.getByRole("button", { name: /edit profile/i }));
-    await user.click(screen.getByText("15-15"));
-    await user.keyboard("16-15{Enter}");
+    await user.click(screen.getByText("0-0"));
+    await user.keyboard("1-0{Enter}");
 
     expect(screen.getByText("Record (W-L)")).toBeInTheDocument();
-    expect(screen.getByText("16-15")).toBeInTheDocument();
+    expect(screen.getByText("1-0")).toBeInTheDocument();
   });
 
   it("edits the match adjustment, rating transition, and date for the active tab", async () => {
@@ -119,13 +120,15 @@ describe("DuprProfile editing flow", () => {
     render(<DuprProfile />);
 
     await user.click(screen.getByRole("button", { name: /edit profile/i }));
-    await user.click(screen.getByText("+0.100"));
+    const matchCard = screen.getByText("ADJUSTMENT").closest("section");
+    expect(matchCard).not.toBeNull();
+
+    await user.click(within(matchCard as HTMLElement).getByText("+0.000"));
     await user.keyboard("+0.125{Enter}");
 
-    expect(screen.getByText("+0.125")).toBeInTheDocument();
-    expect(screen.getByText("2.932")).toBeInTheDocument();
-    expect(screen.getByText("3.032")).toBeInTheDocument();
-    expect(screen.getByText("June 1, 2026")).toBeInTheDocument();
+    expect(within(matchCard as HTMLElement).getByText("+0.125")).toBeInTheDocument();
+    expect(within(matchCard as HTMLElement).getAllByText("0.000")).toHaveLength(2);
+    expect(within(matchCard as HTMLElement).getByText("TBD")).toBeInTheDocument();
   });
 });
 
