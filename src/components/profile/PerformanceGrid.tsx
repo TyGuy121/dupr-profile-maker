@@ -30,19 +30,19 @@ export default function PerformanceGrid({
 }: PerformanceGridProps) {
   return (
     <section className="bg-white px-4 pt-5">
-      <h2 className="text-[21px] font-semibold tracking-[-0.02em] text-[#1f1f1f]">Performance</h2>
+      <h2 className="text-[22px] font-semibold tracking-[-0.02em] text-[#1f1f1f]">Performance</h2>
       <div className="mt-6 grid grid-cols-2 gap-3">
         {performanceCards.map(({ key, label, showInfo }) => (
           <div
             key={key}
-            className="min-h-[114px] rounded-[18px] bg-[#f4f4f6] px-4 py-4 text-[#1f1f1f]"
+            className="min-h-[116px] rounded-[20px] bg-[#f4f4f6] px-4 py-4 text-[#1f1f1f]"
           >
-            <div className="flex items-center gap-1 text-[24px] font-semibold leading-none tracking-[-0.02em]">
+            <div className="flex items-center gap-1 text-[25px] font-semibold leading-none tracking-[-0.02em]">
               <EditableField
                 value={performance[key]}
                 onChange={(value) => onChange(key, value)}
                 isEditing={isEditing}
-                className="text-[24px] font-semibold leading-none tracking-[-0.02em] text-[#1f1f1f]"
+                className="text-[25px] font-semibold leading-none tracking-[-0.02em] text-[#1f1f1f]"
               />
               {showInfo ? <InfoIcon /> : null}
             </div>

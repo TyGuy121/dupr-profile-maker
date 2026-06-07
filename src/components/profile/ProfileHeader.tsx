@@ -28,11 +28,11 @@ export default function ProfileHeader({
   return (
     <div className="bg-white px-4 pb-2 pt-3 text-[#1f1f1f]">
       <div className="flex items-center justify-between">
-        <IconButton label="Settings" icon={<Settings size={24} strokeWidth={2.05} />} />
-        <div className="flex items-center gap-1.5 text-[#1f1f1f]">
-          <IconButton label="Add" icon={<Plus size={20} strokeWidth={2.1} />} />
-          <IconButton label="Messages" icon={<MessageCircle size={20} strokeWidth={2.1} />} />
-          <IconButton label="Share" icon={<Share2 size={20} strokeWidth={2.1} />} />
+        <IconButton label="Settings" icon={<Settings size={23} strokeWidth={2.05} />} />
+        <div className="flex items-center gap-3 text-[#1f1f1f]">
+          <IconButton label="Add" icon={<Plus size={24} strokeWidth={2} />} />
+          <IconButton label="Messages" icon={<MessageCircle size={24} strokeWidth={2} />} />
+          <IconButton label="Share" icon={<Share2 size={24} strokeWidth={2} />} />
         </div>
       </div>
 
@@ -41,10 +41,10 @@ export default function ProfileHeader({
           photo={profile.profilePhoto}
           isEditing={isEditing}
           onChange={onPhotoChange}
-          className="h-16 w-16"
-          imageClassName="h-16 w-16 border-[#f1f2f6]"
+          className="h-[72px] w-[72px]"
+          imageClassName="h-[72px] w-[72px] border-[#f1f2f6]"
           showCameraBadge
-          cameraBadgeClassName="h-5 w-5 bg-[#4b76d9]"
+          cameraBadgeClassName="h-6 w-6 bg-[#4b76d9]"
         />
 
         <div className="min-w-0 flex-1 pt-0.5">
@@ -54,7 +54,7 @@ export default function ProfileHeader({
                 value={profile.name}
                 onChange={(value) => onFieldChange("name", value)}
                 isEditing={isEditing}
-                className="block text-[20px] font-semibold leading-none tracking-[-0.02em] text-[#1f1f1f]"
+                className="block text-[21px] font-semibold leading-none tracking-[-0.03em] text-[#1f1f1f]"
               />
               <div className="mt-1 flex flex-wrap items-center gap-1 text-[15px] leading-tight text-[#8d8f99]">
                 <EditableField
@@ -75,7 +75,7 @@ export default function ProfileHeader({
 
             <div
               aria-label="Followers count"
-              className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#f1f2f6] px-3 py-1.5 text-[16px] font-medium text-[#1f1f1f]"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#f1f2f6] px-3.5 py-2 text-[16px] font-medium text-[#1f1f1f]"
             >
               <PeopleIcon />
               <EditableField
@@ -92,7 +92,7 @@ export default function ProfileHeader({
         </div>
       </div>
 
-      <div className="mt-4 flex items-end gap-6 border-b border-[#e5e7ef]">
+      <div className="mt-4 flex items-end gap-9 border-b border-[#e5e7ef]">
         <TabButton
           label="Doubles"
           active={activeTab === "doubles"}
@@ -103,7 +103,7 @@ export default function ProfileHeader({
           active={activeTab === "singles"}
           onClick={() => onTabChange("singles")}
         />
-        <span className="pb-3 text-[15px] font-medium text-[#8d8f99]">Clubs</span>
+        <span className="pb-[14px] text-[16px] font-medium text-[#8d8f99]">Clubs</span>
       </div>
     </div>
   );
@@ -122,7 +122,7 @@ function TabButton({
     <button
       type="button"
       onClick={onClick}
-      className={`border-b-2 pb-3 text-[15px] font-medium ${
+      className={`border-b-[3px] pb-[13px] text-[16px] font-medium ${
         active
           ? "border-[#4b76d9] text-[#1f1f1f]"
           : "border-transparent text-[#8d8f99]"
@@ -144,7 +144,7 @@ function IconButton({
     <button
       type="button"
       aria-label={label}
-      className="flex h-7 w-7 items-center justify-center rounded-full text-[#1f1f1f]"
+      className="flex h-8 w-8 items-center justify-center rounded-full text-[#1f1f1f]"
     >
       {icon}
     </button>

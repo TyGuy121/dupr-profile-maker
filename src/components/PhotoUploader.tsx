@@ -53,7 +53,7 @@ export default function PhotoUploader({
         />
       ) : (
         <div
-          className={`flex h-full w-full items-center justify-center rounded-full border-[4px] border-white bg-[#4b76d9] ${imageClassName}`}
+          className={`flex h-full w-full items-center justify-center rounded-full border-[3px] border-white bg-[#4b76d9] ${imageClassName}`}
         >
           <svg
             width="28"
@@ -70,7 +70,7 @@ export default function PhotoUploader({
       )}
       {showCameraBadge && (
         <div
-          className={`absolute bottom-0 right-0 flex h-6 w-6 translate-x-1/4 translate-y-1/4 items-center justify-center rounded-full border-2 border-white bg-[#4b76d9] text-white shadow-md ${cameraBadgeClassName}`}
+          className={`absolute bottom-0 right-0 flex h-6 w-6 translate-x-[18%] translate-y-[18%] items-center justify-center rounded-full border-2 border-white bg-[#4b76d9] text-white shadow-md ${cameraBadgeClassName}`}
           aria-hidden="true"
         >
           <svg
