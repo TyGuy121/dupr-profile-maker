@@ -9,6 +9,9 @@ interface EditableFieldProps {
   className?: string;
   inputMode?: "text" | "decimal" | "numeric";
   inputClassName?: string;
+  ariaLabel?: string;
+  minWidthCh?: number;
+  alignClassName?: string;
 }
 
 export default function EditableField({
@@ -18,10 +21,15 @@ export default function EditableField({
   className = "",
   inputMode = "text",
   inputClassName = "",
+  ariaLabel,
+  minWidthCh,
+  alignClassName = "",
 }: EditableFieldProps) {
   const [isActive, setIsActive] = useState(false);
   const [localValue, setLocalValue] = useState(value);
   const inputRef = useRef<HTMLInputElement>(null);
+  const widthCh = Math.max(localValue.length + 1, minWidthCh ?? 0, 3);
+  const sharedStyle = minWidthCh ? { minWidth: `${minWidthCh}ch` } : undefined;
 
   useEffect(() => {
     setLocalValue(value);
@@ -43,29 +51,56 @@ export default function EditableField({
     onChange(localValue);
   };
 
+  const activate = () => {
+    if (isEditing) {
+      setIsActive(true);
+    }
+  };
+
   if (isEditing && isActive) {
     return (
       <input
         ref={inputRef}
         type="text"
+        aria-label={ariaLabel}
         inputMode={inputMode}
         value={localValue}
         onChange={(e) => setLocalValue(e.target.value)}
         onBlur={commit}
         onKeyDown={(e) => e.key === "Enter" && commit()}
-        className={`bg-white/10 border border-white/30 rounded px-1 py-0.5 outline-none text-white ${inputClassName} ${className}`}
-        style={{ width: `${Math.max(localValue.length + 1, 3)}ch` }}
+        className={`bg-white/10 border border-white/30 rounded px-1 py-0.5 outline-none text-white ${alignClassName} ${inputClassName} ${className}`}
+        style={{ ...sharedStyle, width: `${widthCh}ch` }}
       />
     );
   }
 
+  const triggerClassName = `inline-block ${alignClassName} ${className} ${
+    isEditing ? "border-b border-dashed border-white/40 cursor-pointer" : ""
+  }`;
+
+  if (isEditing) {
+    return (
+      <span
+        role="button"
+        tabIndex={0}
+        aria-label={ariaLabel}
+        onClick={activate}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            activate();
+          }
+        }}
+        className={triggerClassName}
+        style={sharedStyle}
+      >
+        {value}
+      </span>
+    );
+  }
+
   return (
-    <span
-      onClick={() => isEditing && setIsActive(true)}
-      className={`${className} ${
-        isEditing ? "border-b border-dashed border-white/40 cursor-pointer" : ""
-      }`}
-    >
+    <span className={triggerClassName} style={sharedStyle}>
       {value}
     </span>
   );
