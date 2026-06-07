@@ -5,9 +5,11 @@
 }
 
 body {
-  background: #05155E;
-  color: white;
+  background: #eef3fb;
+  color: #05155e;
   font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -87,6 +87,21 @@ describe("DuprProfile editing flow", () => {
     expect(screen.getByLabelText("Rating reliability")).toBeInTheDocument();
   });
 
+  it("keeps the export capture root separate from the maker controls", () => {
+    render(<DuprProfile />);
+
+    const captureRoot = document.querySelector(
+      "[data-capture-root='true']"
+    ) as HTMLElement | null;
+    expect(captureRoot).not.toBeNull();
+    expect(
+      screen.getByRole("button", { name: /edit profile/i }).closest("[data-capture-root='true']")
+    ).toBeNull();
+    expect(
+      screen.getByRole("button", { name: /save as photo/i }).closest("[data-capture-root='true']")
+    ).toBeNull();
+  });
+
   it("keeps gray labels fixed while editing performance values", async () => {
     const user = userEvent.setup();
     render(<DuprProfile />);

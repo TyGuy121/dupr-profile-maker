@@ -136,11 +136,12 @@ export default function DuprProfile() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen max-w-[430px] mx-auto relative">
+    <div className="flex min-h-screen flex-col bg-[#EEF3FB]">
       {/* Capture area */}
       <div
         ref={captureRef}
-        className="flex-1 flex flex-col"
+        data-capture-root="true"
+        className="flex flex-1 flex-col"
         style={{
           background: "linear-gradient(225deg, rgba(75,151,254,1) 0%, rgba(1,99,208,1) 40%, rgba(5,21,94,1) 87%)",
         }}
@@ -377,7 +378,7 @@ export default function DuprProfile() {
       </div>
 
       {/* Controls - outside capture area */}
-      <div className="bg-[#000D34] px-5 py-4 flex gap-3">
+      <div className="mx-auto flex w-full max-w-[430px] gap-3 bg-[#000D34] px-5 py-4">
         <button
           onClick={() => setIsEditing(!isEditing)}
           className={`flex-1 rounded-full py-3 text-sm font-semibold ${
